@@ -1,0 +1,20 @@
+Metadata-Version: 1.1
+Name: Webplier
+Version: 1.0
+Summary: Webplier creates site-specific browsers, also called web apps, for your Linux desktop.
+Home-page: http://webplier.com/
+Author: Ken Kinder
+Author-email: kkinder@gmail.com
+License: UNKNOWN
+Download-URL: http://webplier.com/download/
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: X11 Applications :: Qt
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Topic :: Internet :: WWW/HTTP :: Browsers
+Classifier: Topic :: Utilities

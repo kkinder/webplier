@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Webplier
+GenericName=Web Applications
+Comment=Web applications for your desktop
+Exec=plier
+Icon=/usr/share/icons/webplier.png
+Categories=Network;Settings
