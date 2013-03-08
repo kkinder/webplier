@@ -5,8 +5,10 @@ from urlparse import urlparse, urlunparse
 
 from PyQt4.QtCore import QUrl, pyqtSignal, QByteArray, QObject, QString
 from PyQt4.QtNetwork import QNetworkRequest, QNetworkAccessManager
-from PyQt4.QtWebKit import QWebPage
+from PyQt4.QtWebKit import QWebPage, qWebKitVersion
 
+FETCHER_USER_AGENT = 'Mozilla/5.0 (Linux) AppleWebKit/534.34 (KHTML, like Gecko) Webplier-fetcher/1.0' % (
+    qWebKitVersion())
 
 # This specifies how we look for icons. We go through this list, and for the first matching element, we use that icon.
 # Format is:
@@ -50,6 +52,11 @@ class IconGrabber(QObject):
                 urlunparse((parsedUrl.scheme, parsedUrl.netloc, '/favicon.ico', '', '', '')),
                 ]
 
+            if parsedUrl.hostname.startswith('www'):
+                self.tryList.append('http://icons.webplier.com/icons/%s.png' % parsedUrl.hostname.split('.', 1)[-1])
+            else:
+                self.tryList.append('http://icons.webplier.com/icons/%s.png' % parsedUrl.hostname)
+
             self.page = QWebPage()
             self.page.loadFinished.connect(self._loadFinished)
             self.page.mainFrame().load(QUrl(url))
@@ -92,6 +99,7 @@ class IconGrabber(QObject):
     def _downloadIcon(self):
         url = QUrl(self.iconUrl)
         self.iconrequest = QNetworkRequest(url)
+        self.iconrequest.setRawHeader("User-Agent", FETCHER_USER_AGENT)
 
         self.networkManager = QNetworkAccessManager()
 
@@ -105,8 +113,14 @@ class IconGrabber(QObject):
         if status in (301, 302):
             self.iconUrl = unicode(self.reply.header(QNetworkRequest.LocationHeader).toString())
             self._downloadIcon()
+        elif status == 200:
+            contentType = unicode(self.reply.header(QNetworkRequest.ContentTypeHeader).toString()).split(';')[0]
+            if contentType.startswith('image') or contentType == 'application/octet-stream':
+                self.callback(self.url, self.iconUrl, self.reply.readAll())
+            else:
+                self._downloadIconError()
         else:
-            self.callback(self.url, self.iconUrl, self.reply.readAll())
+            self._downloadIconError()
 
     def _downloadIconError(self):
         return self._tryFromList()
@@ -124,7 +138,7 @@ class IconGrabber(QObject):
 
 
 if __name__ == '__main__':
-    from PyQt4.QtGui import QApplication
+    from PyQt4.QtGui import QApplication, QMessageBox
     import sys
     url = 'http://github.com'
     app = QApplication(sys.argv)
