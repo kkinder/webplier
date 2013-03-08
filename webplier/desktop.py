@@ -44,11 +44,25 @@ class WebDesktopEntry(xdg.DesktopEntry.DesktopEntry):
         if not self.hasGroup('Desktop Entry'):
             self.addGroup('Desktop Entry')
 
+        pythonPath = 'python2.7'
+        for p in os.environ["PATH"].split(os.pathsep):
+            if os.path.exists(os.path.join(p, 'python2.7')):
+                pythonPath = os.path.join(p, 'python2.7')
+                break
+
+        webplierPath = 'plier'
+        for p in os.environ["PATH"].split(os.pathsep):
+            if os.path.exists(os.path.join(p, 'plier')):
+                webplierPath = os.path.join(p, 'plier')
+                break
+
         if not self.get('Exec'):
-            self.set('Exec', 'plier %s' % (self.appid,))
+            self.set('Exec', '%s %s %s' % (pythonPath, webplierPath, self.appid))
 
         self.set('X-%s-Type' % APP_NAME, 'Webapp')
         self.set('X-%s-AppId' % APP_NAME, appid)
+
+        self.set('StartupWMClass', appid)
 
         # TODO: Get this working.
 
