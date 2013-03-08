@@ -3,7 +3,7 @@ import os
 
 from py2deb import Py2deb
 
-version = '1.0'
+version = '1.0.1'
 
 os.system('make py')
 
@@ -21,7 +21,7 @@ p.arch = "all"
 p["/usr/share/applications"] = ["webplier/webplier.desktop|webplier.desktop"]
 p["/usr/share/icons"] = ["webplier/resources/webplier.png|webplier.png"]
 p["/usr/bin"] = ["plier"]
-p["/usr/lib/python2.7/dist-packages"] = ["Webplier-1.0.egg-info"]
+p["/usr/lib/python2.7/dist-packages"] = ["Webplier-1.0.1.egg-info"]
 p['/usr/lib/python2.7/dist-packages/webplier'] = map(lambda x: '%s|%s' % (x, x.split('/')[-1]), glob("webplier/*.py") + glob("webplier/*.pyc") + \
                                         glob("webplier/*.html") + ['webplier/ABOUT', 'webplier/COPYING',
                                                                    'webplier/VERSION', 'webplier/ICONS'])
