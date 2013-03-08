@@ -3,12 +3,14 @@ import os
 import sys
 
 from PyQt4.QtGui import *
+from PyQt4.QtWebKit import QWebSettings
 
-from BrowserWindow import BrowserWindow
-from QSingleApplication import QtSingleApplication
-from SiteListWindow import SiteListWindow
-import desktop
 import errors
+import desktop
+from i18n import APP_NAME
+from SiteListWindow import SiteListWindow
+from QSingleApplication import QtSingleApplication
+from BrowserWindow import BrowserWindow
 
 
 def main():
@@ -19,6 +21,9 @@ def main():
             sys.exit(0)
         errors.app = app
         desktopEntry = desktop.getEntry(appid)
+
+        if desktopEntry.get('X-%s-plugins' % APP_NAME) == '1':
+            QWebSettings.globalSettings().setAttribute(QWebSettings.PluginsEnabled, True)
 
         w = BrowserWindow(appid, desktopEntry.getBaseUrl(), desktopEntry.getName())
     else:

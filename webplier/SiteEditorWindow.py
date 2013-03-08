@@ -51,6 +51,7 @@ class SiteEditorWindow(QWidget, Ui_SiteEditor):
             self.nameLineEdit.editingFinished.connect(self._interactiveSave)
             self.urlLineEdit.editingFinished.connect(self._interactiveSave)
             self.iconLocationLineEdit.editingFinished.connect(self._interactiveSave)
+            self.checkBoxBrowserPlugins.stateChanged.connect(self._interactiveSave)
 
         if isWidget:
             self.existingButtonBox.hide()
@@ -78,6 +79,11 @@ class SiteEditorWindow(QWidget, Ui_SiteEditor):
             self.iconLocationLineEdit.setText(iconPath)
             self.refreshIconPreview()
             self._lastIconPath = iconPath
+
+        if self.desktopEntry.get('X-%s-plugins' % APP_NAME) == '1':
+            self.checkBoxBrowserPlugins.setChecked(True)
+        else:
+            self.checkBoxBrowserPlugins.setChecked(False)
 
     def _urlEditingFinished(self):
         url = unicode(self.urlLineEdit.text())
@@ -156,6 +162,11 @@ class SiteEditorWindow(QWidget, Ui_SiteEditor):
             self.desktopEntry.set('Icon', unicode(self.iconLocationLineEdit.text()))
         else:
             self.desktopEntry.set('Icon', '')
+
+        if self.checkBoxBrowserPlugins.isChecked():
+            self.desktopEntry.set('X-%s-plugins' % APP_NAME, '1')
+        else:
+            self.desktopEntry.set('X-%s-plugins' % APP_NAME, '0')
 
         self.desktopEntry.setName(unicode(self.nameLineEdit.text()))
         self.desktopEntry.setBaseUrl(unicode(self.urlLineEdit.text()))
