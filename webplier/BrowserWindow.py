@@ -2,7 +2,7 @@ import webbrowser
 
 from PyQt4.QtCore import QUrl, Qt, QMetaObject
 from PyQt4.QtGui import QMainWindow, QApplication, QWidget, QGridLayout, QLineEdit, QProgressBar, QMenuBar, QMenu, QStatusBar, QToolBar, QAction, QIcon, QKeySequence, QShortcut, QPrinter, QPrintDialog, QDialog
-from PyQt4.QtWebKit import QWebPage
+from PyQt4.QtWebKit import QWebPage, QWebSettings
 
 from LocalWebPage import LocalWebPage
 from LocalWebView import LocalWebView
@@ -62,6 +62,8 @@ class BrowserWindow(QMainWindow):
 
         # Custom webview
         self.page = LocalWebPage()
+        self.page.setFeaturePermission(self.page.mainFrame(), LocalWebPage.Notifications,
+                                       LocalWebPage.PermissionGrantedByUser)
         self.webViewMain = LocalWebView(self.centralwidget)
         self.webViewMain.setPage(self.page)
         self.gridLayout_2.addWidget(self.webViewMain, 0, 0, 1, 1)
@@ -221,9 +223,7 @@ class BrowserWindow(QMainWindow):
         self.editor = SiteEditorWindow(self.desktopEntry, isNew=False)
 
     def _onModify(self):
-
         self.editor.show()
-
 
     def closeEvent(self, qCloseEvent):
         self.desktopEntry.setWindowWidth(self.width())
@@ -245,6 +245,8 @@ class BrowserWindow(QMainWindow):
             self.actionReload.setVisible(False)
             self.actionStop.setVisible(True)
         else:
+            self.page.setFeaturePermission(self.page.mainFrame(), LocalWebPage.Notifications,
+                                           LocalWebPage.PermissionGrantedByUser)
             self.progressBar.hide()
             self.statusBar().hide()
             self.actionReload.setVisible(True)
