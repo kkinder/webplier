@@ -68,6 +68,9 @@ class BrowserWindow(QMainWindow):
         self.webViewMain.setPage(self.page)
         self.gridLayout_2.addWidget(self.webViewMain, 0, 0, 1, 1)
 
+        self.webViewMain.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
+
         self.menubar = QMenuBar(self)
         self.menuFile = QMenu(self.menubar)
         self.menuView = QMenu(self.menubar)
