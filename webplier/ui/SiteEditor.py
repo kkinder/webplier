@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'SiteEditor.ui'
 #
-# Created: Thu Mar  7 20:31:05 2013
+# Created: Sat Mar 23 18:10:45 2013
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_SiteEditor(object):
     def setupUi(self, SiteEditor):
         SiteEditor.setObjectName(_fromUtf8("SiteEditor"))
-        SiteEditor.resize(653, 472)
+        SiteEditor.resize(892, 419)
         self.gridLayout = QtGui.QGridLayout(SiteEditor)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
@@ -75,7 +75,8 @@ class Ui_SiteEditor(object):
         self.retranslateUi(SiteEditor)
         QtCore.QMetaObject.connectSlotsByName(SiteEditor)
         SiteEditor.setTabOrder(self.nameLineEdit, self.urlLineEdit)
-        SiteEditor.setTabOrder(self.urlLineEdit, self.iconLocationLineEdit)
+        SiteEditor.setTabOrder(self.urlLineEdit, self.checkBoxBrowserPlugins)
+        SiteEditor.setTabOrder(self.checkBoxBrowserPlugins, self.iconLocationLineEdit)
         SiteEditor.setTabOrder(self.iconLocationLineEdit, self.browseButton)
         SiteEditor.setTabOrder(self.browseButton, self.newButtonBox)
         SiteEditor.setTabOrder(self.newButtonBox, self.existingButtonBox)

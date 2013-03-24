@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>653</width>
-    <height>472</height>
+    <width>892</width>
+    <height>419</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -134,6 +134,7 @@
  <tabstops>
   <tabstop>nameLineEdit</tabstop>
   <tabstop>urlLineEdit</tabstop>
+  <tabstop>checkBoxBrowserPlugins</tabstop>
   <tabstop>iconLocationLineEdit</tabstop>
   <tabstop>browseButton</tabstop>
   <tabstop>newButtonBox</tabstop>
