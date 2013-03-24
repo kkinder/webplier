@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='Webplier',
-      version='1.0.1',
+      version='1.1.0',
       description='Webplier creates site-specific browsers, also called web apps, for your Linux desktop.',
       author='Ken Kinder',
       author_email='kkinder@gmail.com',

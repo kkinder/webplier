@@ -7,7 +7,7 @@ from PyQt4.QtCore import QUrl, pyqtSignal, QByteArray, QObject, QString
 from PyQt4.QtNetwork import QNetworkRequest, QNetworkAccessManager
 from PyQt4.QtWebKit import QWebPage, qWebKitVersion
 
-FETCHER_USER_AGENT = 'Mozilla/5.0 (Linux) AppleWebKit/534.34 (KHTML, like Gecko) Webplier-fetcher/1.0.1' % (
+FETCHER_USER_AGENT = 'Mozilla/5.0 (Linux) AppleWebKit/534.34 (KHTML, like Gecko) Webplier-fetcher/1.1.0' % (
     qWebKitVersion())
 
 # This specifies how we look for icons. We go through this list, and for the first matching element, we use that icon.

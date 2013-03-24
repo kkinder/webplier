@@ -2,7 +2,7 @@ import webbrowser
 from PyQt4.QtCore import QString
 from PyQt4.QtWebKit import QWebPage, qWebKitVersion
 
-BROWSER_USER_AGENT = 'Mozilla/5.0 (Linux) AppleWebKit/534.34 (KHTML, like Gecko) Webplier-browser/1.0.1' % (
+BROWSER_USER_AGENT = 'Mozilla/5.0 (Linux) AppleWebKit/534.34 (KHTML, like Gecko) Webplier-browser/1.1.0' % (
     qWebKitVersion())
 
 class LocalWebPage(QWebPage):
