@@ -1,7 +1,7 @@
 import webbrowser
 
-from PyQt4.QtCore import QUrl, Qt, QMetaObject
-from PyQt4.QtGui import QMainWindow, QApplication, QWidget, QGridLayout, QLineEdit, QProgressBar, QMenuBar, QMenu, QStatusBar, QToolBar, QAction, QIcon, QKeySequence, QShortcut, QPrinter, QPrintDialog, QDialog
+from PyQt4.QtCore import QUrl, Qt, QMetaObject, pyqtSlot, QObject
+from PyQt4.QtGui import QMainWindow, QApplication, QWidget, QGridLayout, QLineEdit, QProgressBar, QMenuBar, QMenu, QStatusBar, QToolBar, QAction, QIcon, QKeySequence, QShortcut, QPrinter, QPrintDialog, QDialog, QMessageBox
 from PyQt4.QtWebKit import QWebPage, QWebSettings
 
 from LocalWebPage import LocalWebPage
@@ -11,6 +11,33 @@ from SiteEditorWindow import SiteEditorWindow
 from i18n import tr, APP_NAME
 import about
 import desktop
+import notifications
+
+
+class WebkitNotifications(QObject):
+    def __init__(self, browserWindow):
+        QObject.__init__(self)
+        self.browserWindow = browserWindow
+
+    @pyqtSlot(str, str, str)
+    def createNotification(self, icon, title, body):
+        # TODO: Use icon passed by JavaScript
+        icon = self.browserWindow.desktopEntry.get('Icon')
+
+        notifications.show(
+            self.browserWindow.name,
+            icon,
+            unicode(title),
+            unicode(body))
+    #
+    # @pyqtSlot(result=int)
+    # def checkPermission(self):
+    #     return 0
+    #
+    JAVASCRIPT = """
+    window.webkitNotifications = _x_webplier_webkitNotifications;
+    window.webkitNotifications.createNotification = _x_webplier_webkitNotifications.createNotification;
+    """
 
 # noinspection PyCallByClass,PyTypeChecker,PyOldStyleClasses
 class BrowserWindow(QMainWindow):
@@ -51,6 +78,7 @@ class BrowserWindow(QMainWindow):
 
         self.appid = appid
         self.name = name
+        self.original_name = name
         self.base = base
 
         # Main widgets
@@ -64,6 +92,8 @@ class BrowserWindow(QMainWindow):
         self.page = LocalWebPage()
         self.page.setFeaturePermission(self.page.mainFrame(), LocalWebPage.Notifications,
                                        LocalWebPage.PermissionGrantedByUser)
+        self.webkitNotifications = WebkitNotifications(self)
+
         self.webViewMain = LocalWebView(self.centralwidget)
         self.webViewMain.setPage(self.page)
         self.gridLayout_2.addWidget(self.webViewMain, 0, 0, 1, 1)
@@ -203,6 +233,7 @@ class BrowserWindow(QMainWindow):
         self.webViewMain.loadProgress.connect(self._setLoadingStatus)
         self.webViewMain.urlChanged.connect(lambda x: self.urlLineEdit.setText(x.toString()))
         self.page.printRequested.connect(self._onPrint)
+        self.page.loadFinished.connect(self._loadingFinished)
         self.actionHome.triggered.connect(lambda x: self.webViewMain.load(QUrl(self.base)))
         self.actionClose.triggered.connect(self.close)
         self.actionPrint.triggered.connect(self._onPrint)
@@ -239,6 +270,14 @@ class BrowserWindow(QMainWindow):
         if dialog.exec_() != QDialog.Accepted:
             return
         self.page.mainFrame().print_(printer)
+
+    def _loadingFinished(self):
+        # TODO: Add user scripts here
+        # TODO: Add user styles here
+
+        # Override window.webkitNotifications
+        self.page.mainFrame().addToJavaScriptWindowObject("_x_webplier_webkitNotifications", self.webkitNotifications)
+        self.page.mainFrame().evaluateJavaScript(WebkitNotifications.JAVASCRIPT)
 
     def _setLoadingStatus(self, value):
         if value < 100:
